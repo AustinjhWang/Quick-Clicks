@@ -15,6 +15,6 @@ public class ArrowKey : MonoBehaviour
     // Update is called once per frame
     void Update()
     {
-        
+        // can get keydown and destroy if same as direction, but will destroy all, not first
     }
 }

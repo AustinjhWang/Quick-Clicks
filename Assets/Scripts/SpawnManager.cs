@@ -6,8 +6,9 @@ public class SpawnManager : MonoBehaviour
 {
 
     public GameObject[] arrowKeyPrefabs;
-    private float spawnPosX;
+    private float spawnPosX = -1f;
     private float spawnPosY = -0.5f;
+    private float distanceBetweenArrows = 2f;
 
     // Start is called before the first frame update
     void Start()
@@ -21,20 +22,22 @@ public class SpawnManager : MonoBehaviour
         
     }
 
-    public int[] SpawnWave(int waveNumber)
+    public List<GameObject> SpawnWave(int waveNumber)
     {
-        int[] arrowKeyList = new int[waveNumber];
+        List<GameObject> arrowKeyList = new List<GameObject>();
         for (int i = 0; i < waveNumber; i++)
         {
             int arrowIndex = Random.Range(0, arrowKeyPrefabs.Length);
-            arrowKeyList[i] = arrowIndex;
 
-            spawnPosX = -waveNumber;
+            spawnPosX += distanceBetweenArrows;
             Vector3 spawnPos = new Vector3(spawnPosX, spawnPosY, 0);
 
-            Instantiate(arrowKeyPrefabs[arrowIndex], spawnPos, arrowKeyPrefabs[arrowIndex].transform.rotation);
+            // store the copied object in an list
+            arrowKeyList.Add(Instantiate(arrowKeyPrefabs[arrowIndex], spawnPos, arrowKeyPrefabs[arrowIndex].transform.rotation));
+            
         }
 
+        spawnPosX = -1;
         return arrowKeyList;
         
     }
