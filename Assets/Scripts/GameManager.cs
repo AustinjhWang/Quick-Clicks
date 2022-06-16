@@ -20,7 +20,7 @@ public class GameManager : MonoBehaviour
     void Update()
     {
         arrowCount = FindObjectsOfType<ArrowKey>().Length;
-        if (arrowCount == 0)
+        if (arrowCount == 0 && waveNumber <= 10)
         {
             arrowKeyList = spawnManager.SpawnWave(waveNumber);
 
@@ -28,6 +28,11 @@ public class GameManager : MonoBehaviour
 
             waveNumber++;
             
+        }
+
+        else if (waveNumber > 10)
+        {
+            GameOver();
         }
     }
   
@@ -73,9 +78,13 @@ public class GameManager : MonoBehaviour
             yield return new WaitForSeconds(Time.deltaTime);
             Destroy(arrowKey);
         }
+    }
 
+    public void GameOver()
+    {
 
     }
+
 }
 
    
