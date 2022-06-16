@@ -1,6 +1,7 @@
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
+using TMPro;
 
 public class GameManager : MonoBehaviour
 {
@@ -9,6 +10,7 @@ public class GameManager : MonoBehaviour
     private SpawnManager spawnManager;
     private int arrowCount;
     private List<GameObject> arrowKeyList;
+    public TextMeshProUGUI timerText;
 
     // Start is called before the first frame update
     void Start()
@@ -19,6 +21,9 @@ public class GameManager : MonoBehaviour
     // Update is called once per frame
     void Update()
     {
+        float seconds = Time.time;
+        timerText.text = "Time: " + (int)(seconds * 10f) / 10f;
+
         arrowCount = FindObjectsOfType<ArrowKey>().Length;
         if (arrowCount == 0 && waveNumber <= 10)
         {
