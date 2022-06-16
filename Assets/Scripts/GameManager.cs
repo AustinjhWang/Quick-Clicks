@@ -11,34 +11,39 @@ public class GameManager : MonoBehaviour
     private int arrowCount;
     private List<GameObject> arrowKeyList;
     public TextMeshProUGUI timerText;
+    private bool isGameActive;
+    private float score;
 
     // Start is called before the first frame update
     void Start()
     {
         spawnManager = GameObject.Find("Spawn Manager").GetComponent<SpawnManager>();
+        isGameActive = true;
     }
 
     // Update is called once per frame
     void Update()
     {
-        float seconds = Time.time;
-        timerText.text = "Time: " + (int)(seconds * 10f) / 10f;
-
-        arrowCount = FindObjectsOfType<ArrowKey>().Length;
-        if (arrowCount == 0 && waveNumber <= 10)
+        if (isGameActive)
         {
-            arrowKeyList = spawnManager.SpawnWave(waveNumber);
+            float seconds = Time.time;
+            timerText.text = "Time: " + (int)(seconds * 10f) / 10f;
 
-            StartCoroutine("PlayWave", arrowKeyList);
+            arrowCount = FindObjectsOfType<ArrowKey>().Length;
+            if (arrowCount == 0 && waveNumber <= 10)
+            {
+                arrowKeyList = spawnManager.SpawnWave(waveNumber);
 
-            waveNumber++;
-            
+                StartCoroutine("PlayWave", arrowKeyList);
+
+            }
+
+            else if (waveNumber > 10)
+            {
+                GameOver();
+            }
         }
-
-        else if (waveNumber > 10)
-        {
-            GameOver();
-        }
+        
     }
   
    IEnumerator PlayWave(List<GameObject> arrowKeyList) 
@@ -83,11 +88,16 @@ public class GameManager : MonoBehaviour
             yield return new WaitForSeconds(Time.deltaTime);
             Destroy(arrowKey);
         }
+
+        waveNumber++;
+
     }
 
     public void GameOver()
     {
-
+        score = Time.deltaTime;
+        isGameActive = false;
+        
     }
 
 }
