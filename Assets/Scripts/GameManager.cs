@@ -11,6 +11,7 @@ public class GameManager : MonoBehaviour
     private int arrowCount;
     private List<GameObject> arrowKeyList;
     public TextMeshProUGUI timerText;
+    public TextMeshProUGUI waveText;
     private bool isGameActive;
     private float score;
     private bool misclick;
@@ -49,6 +50,7 @@ public class GameManager : MonoBehaviour
    IEnumerator PlayWave(List<GameObject> arrowKeyList) 
     {
         print(waveNumber);
+        waveText.text = "Wave: " + waveNumber;
 
         for (int i = 0; i < arrowKeyList.Count; i++)
         {
