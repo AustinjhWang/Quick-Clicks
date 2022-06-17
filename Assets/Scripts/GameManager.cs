@@ -33,7 +33,6 @@ public class GameManager : MonoBehaviour
             if (arrowCount == 0 && waveNumber <= 10)
             {
                 arrowKeyList = spawnManager.SpawnWave(waveNumber);
-
                 StartCoroutine("PlayWave", arrowKeyList);
 
             }
@@ -50,15 +49,27 @@ public class GameManager : MonoBehaviour
     {
         print(waveNumber);
 
-        foreach (GameObject arrowKey in arrowKeyList)
+        for (int i = 0; i < arrowKeyList.Count; i++)
         {
+            bool flag = false;
+            GameObject arrowKey = arrowKeyList[i];
             string direction = arrowKey.GetComponent<ArrowKey>().direction;
-            Debug.Log(direction);
+            print(direction);
 
             if (direction == "Up")
             {
                 while (!Input.GetKeyDown(KeyCode.UpArrow))
                 {
+                    if (Input.GetKeyDown(KeyCode.DownArrow) || Input.GetKeyDown(KeyCode.RightArrow) || Input.GetKeyDown(KeyCode.LeftArrow))
+                    {
+                        foreach (GameObject hiddenArrowKey in arrowKeyList)
+                        {
+                            hiddenArrowKey.SetActive(true);
+                        }
+                        i = -1;
+                        flag = true;
+                        break;
+                    }
                     yield return null;
                 }
             }
@@ -66,6 +77,16 @@ public class GameManager : MonoBehaviour
             {
                 while (!Input.GetKeyDown(KeyCode.DownArrow))
                 {
+                    if (Input.GetKeyDown(KeyCode.UpArrow) || Input.GetKeyDown(KeyCode.RightArrow) || Input.GetKeyDown(KeyCode.LeftArrow))
+                    {
+                        foreach (GameObject hiddenArrowKey in arrowKeyList)
+                        {
+                            hiddenArrowKey.SetActive(true);
+                        }
+                        i = -1;
+                        flag = true;
+                        break;
+                    }
                     yield return null;
                 }
             }
@@ -73,6 +94,16 @@ public class GameManager : MonoBehaviour
             {
                 while (!Input.GetKeyDown(KeyCode.LeftArrow))
                 {
+                    if (Input.GetKeyDown(KeyCode.DownArrow) || Input.GetKeyDown(KeyCode.RightArrow) || Input.GetKeyDown(KeyCode.UpArrow))
+                    {
+                        foreach (GameObject hiddenArrowKey in arrowKeyList)
+                        {
+                            hiddenArrowKey.SetActive(true);
+                        }
+                        i = -1;
+                        flag = true;
+                        break;
+                    }
                     yield return null;
                 }
             }
@@ -80,16 +111,38 @@ public class GameManager : MonoBehaviour
             {
                 while (!Input.GetKeyDown(KeyCode.RightArrow))
                 {
+                    if (Input.GetKeyDown(KeyCode.DownArrow) || Input.GetKeyDown(KeyCode.UpArrow) || Input.GetKeyDown(KeyCode.LeftArrow))
+                    {
+                        foreach (GameObject hiddenArrowKey in arrowKeyList)
+                        {
+                            hiddenArrowKey.SetActive(true);
+                        }
+                        i = -1;
+                        flag = true;
+                        break;
+                    }
                     yield return null;
                 }
             }
 
             // need to wait or else Input.GetKeyDown will be true multiple times in the same frame
             yield return new WaitForSeconds(Time.deltaTime);
-            Destroy(arrowKey);
+            
+            // set arrowKey as inactive instead of deleting in case we need to reset wave
+            if (flag == false)
+            {
+                arrowKey.SetActive(false);
+            }
+            
         }
 
         waveNumber++;
+
+        // delete all arrowKeys at the end of the wave
+        foreach (GameObject arrowKey in arrowKeyList)
+        {
+            Destroy(arrowKey);
+        }
 
     }
 
@@ -100,6 +153,10 @@ public class GameManager : MonoBehaviour
         
     }
 
+    void ResetWave(List<GameObject> arrowKeyList)
+    {
+
+    }
 }
 
    

@@ -37,13 +37,31 @@ public class SpawnManager : MonoBehaviour
             spawnPosX += distanceBetweenArrows;
             Vector3 spawnPos = new Vector3(spawnPosX, spawnPosY, 0);
 
+            GameObject arrowKey = Instantiate(arrowKeyPrefabs[arrowIndex], spawnPos, arrowKeyPrefabs[arrowIndex].transform.rotation);
+            arrowKey.GetComponent<ArrowKey>().spawnPos = spawnPos;
+
             // store the copied object in an list
-            arrowKeyList.Add(Instantiate(arrowKeyPrefabs[arrowIndex], spawnPos, arrowKeyPrefabs[arrowIndex].transform.rotation));
+            arrowKeyList.Add(arrowKey);
             
         }
 
         return arrowKeyList;
         
+    }
+
+    public void spawnExistingWave(List<GameObject> arrowKeyList)
+    {
+        // delete all existing arrows
+        foreach (ArrowKey arrowKey in FindObjectsOfType<ArrowKey>())
+        {
+            Destroy(arrowKey);
+        }
+
+        // spawn previous wave
+        foreach (GameObject arrowKey in arrowKeyList)
+        {
+            Instantiate(arrowKey, arrowKey.GetComponent<ArrowKey>().spawnPos, arrowKey.transform.rotation);
+        }
     }
 
     void DetermineEnemyNumber(int waveNumber)

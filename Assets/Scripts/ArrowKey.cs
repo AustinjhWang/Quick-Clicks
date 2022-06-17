@@ -4,7 +4,8 @@ using UnityEngine;
 
 public class ArrowKey : MonoBehaviour
 {
-    public string direction; 
+    public string direction;
+    public Vector3 spawnPos;
 
     // Start is called before the first frame update
     void Start()
@@ -15,6 +16,6 @@ public class ArrowKey : MonoBehaviour
     // Update is called once per frame
     void Update()
     {
-        // can get keydown and destroy if same as direction, but will destroy all, not first
+       
     }
 }
