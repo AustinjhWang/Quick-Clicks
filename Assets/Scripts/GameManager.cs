@@ -13,6 +13,7 @@ public class GameManager : MonoBehaviour
     public TextMeshProUGUI timerText;
     private bool isGameActive;
     private float score;
+    private bool misclick;
 
     // Start is called before the first frame update
     void Start()
@@ -51,7 +52,7 @@ public class GameManager : MonoBehaviour
 
         for (int i = 0; i < arrowKeyList.Count; i++)
         {
-            bool flag = false;
+            misclick = false;
             GameObject arrowKey = arrowKeyList[i];
             string direction = arrowKey.GetComponent<ArrowKey>().direction;
             print(direction);
@@ -62,12 +63,8 @@ public class GameManager : MonoBehaviour
                 {
                     if (Input.GetKeyDown(KeyCode.DownArrow) || Input.GetKeyDown(KeyCode.RightArrow) || Input.GetKeyDown(KeyCode.LeftArrow))
                     {
-                        foreach (GameObject hiddenArrowKey in arrowKeyList)
-                        {
-                            hiddenArrowKey.SetActive(true);
-                        }
+                        ResetWave(arrowKeyList);
                         i = -1;
-                        flag = true;
                         break;
                     }
                     yield return null;
@@ -79,12 +76,8 @@ public class GameManager : MonoBehaviour
                 {
                     if (Input.GetKeyDown(KeyCode.UpArrow) || Input.GetKeyDown(KeyCode.RightArrow) || Input.GetKeyDown(KeyCode.LeftArrow))
                     {
-                        foreach (GameObject hiddenArrowKey in arrowKeyList)
-                        {
-                            hiddenArrowKey.SetActive(true);
-                        }
+                        ResetWave(arrowKeyList);
                         i = -1;
-                        flag = true;
                         break;
                     }
                     yield return null;
@@ -96,12 +89,8 @@ public class GameManager : MonoBehaviour
                 {
                     if (Input.GetKeyDown(KeyCode.DownArrow) || Input.GetKeyDown(KeyCode.RightArrow) || Input.GetKeyDown(KeyCode.UpArrow))
                     {
-                        foreach (GameObject hiddenArrowKey in arrowKeyList)
-                        {
-                            hiddenArrowKey.SetActive(true);
-                        }
+                        ResetWave(arrowKeyList);
                         i = -1;
-                        flag = true;
                         break;
                     }
                     yield return null;
@@ -113,12 +102,8 @@ public class GameManager : MonoBehaviour
                 {
                     if (Input.GetKeyDown(KeyCode.DownArrow) || Input.GetKeyDown(KeyCode.UpArrow) || Input.GetKeyDown(KeyCode.LeftArrow))
                     {
-                        foreach (GameObject hiddenArrowKey in arrowKeyList)
-                        {
-                            hiddenArrowKey.SetActive(true);
-                        }
+                        ResetWave(arrowKeyList);
                         i = -1;
-                        flag = true;
                         break;
                     }
                     yield return null;
@@ -129,7 +114,7 @@ public class GameManager : MonoBehaviour
             yield return new WaitForSeconds(Time.deltaTime);
             
             // set arrowKey as inactive instead of deleting in case we need to reset wave
-            if (flag == false)
+            if (misclick == false)
             {
                 arrowKey.SetActive(false);
             }
@@ -155,7 +140,11 @@ public class GameManager : MonoBehaviour
 
     void ResetWave(List<GameObject> arrowKeyList)
     {
-
+        foreach (GameObject hiddenArrowKey in arrowKeyList)
+        {
+            hiddenArrowKey.SetActive(true);
+        }
+        misclick = true;
     }
 }
 
