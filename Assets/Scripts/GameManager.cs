@@ -2,6 +2,8 @@ using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 using TMPro;
+using UnityEngine.SceneManagement;
+using UnityEngine.UI;
 
 public class GameManager : MonoBehaviour
 {
@@ -15,6 +17,7 @@ public class GameManager : MonoBehaviour
     private bool isGameActive;
     private float score;
     private bool misclick;
+    public Button playAgainButton;
 
     // Start is called before the first frame update
     void Start()
@@ -137,6 +140,7 @@ public class GameManager : MonoBehaviour
     {
         score = Time.deltaTime;
         isGameActive = false;
+        playAgainButton.gameObject.SetActive(true);
         
     }
 
@@ -147,6 +151,11 @@ public class GameManager : MonoBehaviour
             hiddenArrowKey.SetActive(true);
         }
         misclick = true;
+    }
+
+    public void RestartGame()
+    {
+        SceneManager.LoadScene(SceneManager.GetActiveScene().name);
     }
 }
 
