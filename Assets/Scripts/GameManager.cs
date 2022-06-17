@@ -31,7 +31,7 @@ public class GameManager : MonoBehaviour
     {
         if (isGameActive)
         {
-            float seconds = Time.time;
+            float seconds = Time.timeSinceLevelLoad;
             timerText.text = "Time: " + (int)(seconds * 10f) / 10f;
 
             arrowCount = FindObjectsOfType<ArrowKey>().Length;
