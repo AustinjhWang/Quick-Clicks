@@ -4,6 +4,7 @@ using UnityEngine;
 using TMPro;
 using UnityEngine.SceneManagement;
 using UnityEngine.UI;
+using System.IO;
 
 public class GameManager : MonoBehaviour
 {
@@ -14,16 +15,19 @@ public class GameManager : MonoBehaviour
     private List<GameObject> arrowKeyList;
     public TextMeshProUGUI timerText;
     public TextMeshProUGUI waveText;
+    public TextMeshProUGUI bestTimeText;
     private bool isGameActive;
-    private float score;
     private bool misclick;
     public Button playAgainButton;
+    private float time;
+    private float bestTime = float.MaxValue;
 
     // Start is called before the first frame update
     void Start()
     {
         spawnManager = GameObject.Find("Spawn Manager").GetComponent<SpawnManager>();
         isGameActive = true;
+        LoadScore();
     }
 
     // Update is called once per frame
@@ -31,8 +35,8 @@ public class GameManager : MonoBehaviour
     {
         if (isGameActive)
         {
-            float seconds = Time.timeSinceLevelLoad;
-            timerText.text = "Time: " + (int)(seconds * 10f) / 10f;
+            time = Time.timeSinceLevelLoad;
+            timerText.text = "Time: " + (int)(time * 10f) / 10f;
 
             arrowCount = FindObjectsOfType<ArrowKey>().Length;
             if (arrowCount == 0 && waveNumber <= 10)
@@ -138,9 +142,18 @@ public class GameManager : MonoBehaviour
 
     public void GameOver()
     {
-        score = Time.deltaTime;
+
         isGameActive = false;
         playAgainButton.gameObject.SetActive(true);
+
+        if (time < bestTime)
+        {
+            SaveScore();
+            bestTime = time;
+        }
+
+        bestTimeText.text = "Best Time: " + (int)(bestTime * 10f) / 10f;
+        bestTimeText.gameObject.SetActive(true);
         
     }
 
@@ -157,6 +170,38 @@ public class GameManager : MonoBehaviour
     {
         SceneManager.LoadScene(SceneManager.GetActiveScene().name);
     }
+
+    [System.Serializable]
+    class SaveData
+    {
+        public float time;
+    }
+
+    private void SaveScore()
+    {
+        SaveData data = new SaveData();
+        data.time = time;
+
+        string json = JsonUtility.ToJson(data);
+        File.WriteAllText(Application.persistentDataPath + "/savefile.json", json);
+    }
+
+    private void LoadScore()
+    {
+        string path = Application.persistentDataPath + "/savefile.json";
+
+        if (File.Exists(path))
+        {
+            string json = File.ReadAllText(path);
+            SaveData data = JsonUtility.FromJson<SaveData>(json);
+
+            bestTime = data.time;
+        }
+
+        
+    }
+
+
 }
 
    
