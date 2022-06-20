@@ -50,6 +50,11 @@ public class GameManager : MonoBehaviour
             {
                 GameOver();
             }
+
+            if (Input.GetKeyDown(KeyCode.Space))
+            {
+                RestartGame();
+            }
         }
         
     }
