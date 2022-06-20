@@ -56,7 +56,6 @@ public class GameManager : MonoBehaviour
   
    IEnumerator PlayWave(List<GameObject> arrowKeyList) 
     {
-        print(waveNumber);
         waveText.text = "Wave: " + waveNumber;
 
         for (int i = 0; i < arrowKeyList.Count; i++)
@@ -64,7 +63,6 @@ public class GameManager : MonoBehaviour
             misclick = false;
             GameObject arrowKey = arrowKeyList[i];
             string direction = arrowKey.GetComponent<ArrowKey>().direction;
-            print(direction);
 
             if (direction == "Up")
             {
@@ -120,8 +118,8 @@ public class GameManager : MonoBehaviour
             }
 
             // need to wait or else Input.GetKeyDown will be true multiple times in the same frame
-            yield return new WaitForSeconds(Time.deltaTime);
-            
+            yield return null;
+
             // set arrowKey as inactive instead of deleting in case we need to reset wave
             if (misclick == false)
             {
