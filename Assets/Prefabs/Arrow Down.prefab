@@ -75,7 +75,7 @@ SpriteRenderer:
   m_SortingLayer: 0
   m_SortingOrder: 0
   m_Sprite: {fileID: 21300000, guid: 515e1722bb0b86e4bb28c0aaade52e65, type: 3}
-  m_Color: {r: 0, g: 0.9716981, b: 0.032799963, a: 1}
+  m_Color: {r: 1, g: 0, b: 0, a: 1}
   m_FlipX: 0
   m_FlipY: 0
   m_DrawMode: 0
@@ -98,3 +98,4 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   direction: Down
+  spawnPos: {x: 0, y: 0, z: 0}
